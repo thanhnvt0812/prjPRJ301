@@ -1,0 +1,43 @@
+h1 {
+    padding-left: 620px;
+}
+.bodyform{
+    width: 70%;
+    height: 500px;
+    margin-left: 60px;
+}
+.bodyform-left{
+    width: 30%;
+    height: 500px;
+    border-right: 1px solid black;
+    float: left;
+}
+.bodyform-right{
+
+    width: 69.5%;
+    float: right;
+    height: 500px;
+
+}
+.tableAttendance{
+    padding-left: 20px;
+}
+.tableSchedule{
+    padding-left: 20px;
+}
+table,th,td,tr {
+    border: 1px solid black;
+}
+th ,td{
+    padding-left: 40px;
+    padding-right: 40px;
+}
+.watch{
+    padding-top: 40px;
+    padding-left: 20px;
+}
+.watch label{
+    font-weight: bold;
+    padding-right: 30px;
+}
+
