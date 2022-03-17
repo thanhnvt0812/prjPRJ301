@@ -13,9 +13,9 @@
         <link href="cssStyle.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-        <div style="border: 1px solid greenyellow; color: blue; background: greenyellow">
+        <div style="border: 1px solid orange; color: blue; background: orange">
             <header>
-                <h1 style="border: 1px solid greenyellow; padding-left: 580px; background: white; height:100px; padding-top: 50px; font-size: 50px ">FBT Education</h1>
+                <h1 style="border: 1px solid orange; padding-left: 580px; background: white; height:100px; padding-top: 50px; font-size: 50px ">FPT Education</h1>
             </header>
         </div>
         <div style="border: 0px solid black">

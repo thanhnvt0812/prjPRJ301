@@ -41,7 +41,6 @@
                                     <form action="teacherSchedule" method="GET" >
                                         <select name="selectedDateWeek" onchange="this.form.submit()">
                                             <c:forEach items="${listWeeks}" var="listWeeks">
-
                                                 <option value="${listWeeks.id}">
                                                     <fmt:formatDate value="${listWeeks.weekStart}" pattern="dd-MM-yyyy" /> TO
                                                     <fmt:formatDate value="${listWeeks.weekEnd}" pattern="dd-MM-yyyy" /></option>

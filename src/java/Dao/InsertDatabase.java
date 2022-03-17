@@ -43,7 +43,7 @@ public class InsertDatabase {
 //    public static void main(String[] args) throws java.lang.Exception {
 //        InsertDatabase Insertdate = new InsertDatabase();
 //        Date dt = new Date();
-//        List<Date> dates = printDates("20210510", "20210725");
+//        List<Date> dates = printDates("20220510", "20220725");
 //        Date startDate;
 //        for (Date date : dates) {
 //            SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");

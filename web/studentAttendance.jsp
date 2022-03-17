@@ -1,9 +1,3 @@
-<%-- 
-    Document   : studentAttendance
-    Created on : Jul 19, 2021, 11:18:04 AM
-    Author     : Admin
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -16,7 +10,7 @@
     <body>
         <div style="border: 1px solid greenyellow; color: blue; background: greenyellow">
             <header>
-                <h1 style="border: 1px solid greenyellow; padding-left: 580px; background: white; height:100px; padding-top: 50px; font-size: 50px ">FBT Education</h1>
+                <h1 style="border: 1px solid greenyellow; padding-left: 580px; background: white; height:100px; padding-top: 50px; font-size: 50px ">FPT Education</h1>
             </header>
         </div>
         <div style="border: 0px solid black">
