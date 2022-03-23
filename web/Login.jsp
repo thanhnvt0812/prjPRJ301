@@ -29,6 +29,7 @@
                             <option value="0">-Role-</option>
                             <option value="1">Teacher</option>
                             <option value="2">Student</option>
+                            <option value="3">Admin</option>
                         </select>
                     <p style="padding-left: 120px"><input type="Submit" value="Login">
                 </form>

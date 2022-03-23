@@ -6,32 +6,39 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="cssStyle.css" rel="stylesheet" type="text/css"/>
+        <style >
+            body{
+                background-image:url('img/4301_Ynh-1-TrYYng-YYi-hYc-FPT.jpg');
+                background-size: 1530px 800px;
+            }
+        </style>      
     </head>
     <body>
-        <div style="border: 1px solid greenyellow; color: blue; background: greenyellow">
+        <div>
             <header>
-                <h1 style="border: 1px solid greenyellow; padding-left: 580px; background: white; height:100px; padding-top: 50px; font-size: 50px ">FPT Education</h1>
+                <h1 style="padding-left: 580px; height:100px; padding-top: 50px; font-size: 50px; color: orange ">FPT Education</h1>
             </header>
         </div>
-        <div style="border: 0px solid black">
-            <h1 style="font-size: 45px; background-color: gainsboro; padding-left: 550px">Xin chào ${sessionScope.username}</h1>
+        <div style="border: 0px solid black; padding-top: 50px">
+            <h1 style="font-size: 35px; background-color: gainsboro; padding-left: 550px">Xin chào ${sessionScope.username}</h1>
             <a href="logout" style="padding-left: 1350px; text-decoration: none; font-size: 20px; font-weight: bold">Logout</a>
         </div>
         <div class="bodyform">
             <div class="bodyform-left">
                 <div class="watch" >
-                    <a href="studentSchedule" style="border: 0px solid black; font-size: 20px; font-weight: bold; text-decoration: none; ">Watch my Schedule</a>
+                    <a class="btn btn-primary" href="studentSchedule" role="button" style="border: 0px solid black; font-size: 20px; font-weight: bold; text-decoration: none; ">Watch my Schedule</a>
                     <br>
-                    <a href="studentAttendance" style="border: 0px solid black; font-size: 20px; font-weight: bold; text-decoration: none; ">Watch my Attendance</a>
+                    <a class="btn btn-primary" href="studentAttendance" role="button" style="border: 0px solid black; font-size: 20px; font-weight: bold; text-decoration: none; margin-top: 10px; ">Watch my Attendance</a>
                 </div>
             </div>
             <div class="bodyform-right">
                 <div class="tableSchedule">
-                    <table>
+                    <table style="background-color: whitesmoke" >
                         <thead>
                             <tr >
-                                <th rowspan="2">
+                                <th rowspan="2" style="background: #6B90DA">
                                     <form action="studentSchedule" method="GET" >
                                         <select name="selectedDateWeek" onchange="this.form.submit()">
                                             <c:forEach items="${listWeeks}" var="listWeeks">
@@ -45,18 +52,18 @@
                                     </form>
 
                                 </th>
-                                <th><p>Monday</p></th>
-                                <th><p>Tuesday</p></th>
-                                <th><p>Wednesday</p></th>
-                                <th><p>Thursday</p></th>
-                                <th><p>Friday</p></th>
-                                <th><p>Saturday</p></th>
-                                <th><p>Sunday</p></th>
+                                <th style="background: #6B90DA"><p>Monday</p></th>
+                                <th style="background: #6B90DA"><p>Tuesday</p></th>
+                                <th style="background: #6B90DA"><p>Wednesday</p></th>
+                                <th style="background: #6B90DA"><p>Thursday</p></th>
+                                <th style="background: #6B90DA"><p>Friday</p></th>
+                                <th style="background: #6B90DA"><p>Saturday</p></th>
+                                <th style="background: #6B90DA"><p>Sunday</p></th>
                             </tr>
                             <tr>
                                 <c:forEach items="${listDates}" var="listDates">
 
-                                    <th>
+                                    <th style="background-color: lightblue">
                                         <p>
                                             <fmt:formatDate value="${listDates.dateTime}" pattern="dd-MM-yyyy" /> 
                                         </p> 
@@ -70,7 +77,7 @@
                             <c:forEach items="${listSlot}" var="listSlot">
 
                                 <tr>
-                                    <th>
+                                    <th style="background-color: lightgray">
                                         ${listSlot.slotName}
                                         <br>
                                         <fmt:formatDate type="time" timeStyle="short" value="${listSlot.slotStart}" /> - 
@@ -84,7 +91,10 @@
                                                     ${listStdSchdDetail.subjectCode} at ${listStdSchdDetail.className}</p>
 
                                                     <c:if test="${listStdSchdDetail.status ==1}">
-                                                        <p style="color: green ;margin-left: 33px">Attended</p>
+                                                        
+                                                            <p style="color: green ;margin-left: 33px">Attended</p>
+                                                        
+                                                        
                                                     </c:if>
                                                     <c:if test="${listStdSchdDetail.status ==0}">
                                                         <p style="color: red;margin-left: 33px">Absent</p>

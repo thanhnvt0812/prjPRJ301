@@ -1,7 +1,14 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Controller;
 
 import Dao.DAO;
 import Entity.Account;
+import Entity.ClassMember;
+import Entity.Student;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -10,13 +17,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class Login extends HttpServlet {
+/**
+ *
+ * @author Admin
+ */
+public class CreateStudent extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        request.getRequestDispatcher("Login.jsp").forward(request, response);
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
 
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -45,29 +67,25 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        int role = Integer.parseInt(request.getParameter("selectedRole"));
-        HttpSession session = request.getSession();
+        DAO dao = new DAO();
+        String rollnumber = request.getParameter("rollnumber");
+        String name = request.getParameter("name");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        String mess = "Your information is error, Please reenter it";
-        DAO acc = new DAO();
-        Account a = acc.getAccount(username, password, role);
-        if (a != null) {
-            if (a.getRole() == 1) {
-                session.setAttribute("username", a.getUsername());
-                response.sendRedirect("TeacherManager");
-            } else if (a.getRole() == 2) {
-                session.setAttribute("username", a.getUsername());
-                response.sendRedirect("StudentManager");
-            } else if (a.getRole() == 3) {
-                session.setAttribute("username", a.getUsername());
-                response.sendRedirect("AdminManager");
-            }
-        } else {
-            request.setAttribute("mess", mess);
-            request.getRequestDispatcher("Login.jsp").forward(request, response);
-        }
+        String email = request.getParameter("email");
+        String gen = request.getParameter("gender");
+        String dob = request.getParameter("dob");
+        String className = request.getParameter("class");
+        Boolean gender = Boolean.parseBoolean(gen);
+        int classID = Integer.parseInt(className);
+        Account acc = new Account(username, password, 2);
+        dao.insertAccount(acc);
+        Student std = new Student(rollnumber, name, username, email, gender, dob);
+        dao.insertStudent(std);
+        ClassMember clm = new ClassMember(rollnumber, classID);
+        dao.insertStudentIntoCalss(clm);
+        request.getRequestDispatcher("StudentInformation.jsp").forward(request, response);
+
     }
 
     /**
@@ -80,4 +98,7 @@ public class Login extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    public static void main(String[] args) {
+
+    }
 }

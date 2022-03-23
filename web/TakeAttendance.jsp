@@ -5,30 +5,37 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="cssStyle.css" rel="stylesheet" type="text/css"/>
+        <style >
+            body{
+                background-image:url('img/nha-alpha.jpg');
+                background-size: 1730px 900px;
+            }
+        </style>    
     </head>
     <body>
-        <div style="border: 1px solid greenyellow; color: blue; background: greenyellow">
+        <div>
             <header>
-                <h1 style="border: 1px solid greenyellow; padding-left: 580px; background: white; height:100px; padding-top: 50px; font-size: 50px ">FPT Education</h1>
+                <h1 style="padding-left: 580px; height:100px; padding-top: 50px; font-size: 50px; color: orange ">FPT Education</h1>
             </header>
         </div>
-        <div style="border: 0px solid black">
-            <h1 style="font-size: 45px; background-color: gainsboro; padding-left: 550px">Xin chào ${sessionScope.username}</h1>
+        <div style="border: 0px solid black; padding-top: 50px">
+            <h1 style="font-size: 35px; background-color: gainsboro; padding-left: 550px">Xin chào ${sessionScope.username}</h1>
             <a href="logout" style="padding-left: 1350px; text-decoration: none; font-size: 20px; font-weight: bold">Logout</a>
         </div>
         <div class="bodyform">
             <div class="bodyform-left">
                 <div class="watch">
-                    <a href="teacherSchedule" style="border: 0px solid black; font-size: 20px; font-weight: bold; text-decoration: none;" >Watch my Schedule</a>
+                    <a class="btn btn-primary" href="teacherSchedule" role="button" style="border: 0px solid black; font-size: 20px; font-weight: bold; text-decoration: none;">Watch my Schedule</a>
                     <br>    
-                    <a href="takeAttendance" style="border: 0px solid black; font-size: 20px; font-weight: bold; text-decoration: none;">Take Attendance</a>
+                    <a class="btn btn-primary" href="takeAttendance" role="button" style="border: 0px solid black; font-size: 20px; font-weight: bold; text-decoration: none;margin-top: 10px;">Take Attendance</a>
                 </div>
                 <div style="margin-top:20px;">
                     <ul>
                         <c:forEach items="${listSubAttendance}" var="listSubAttendance">
                             <li>
-                                <a href="takeAttendance?subjectCode=${listSubAttendance.subjectCode}&&className=${listSubAttendance.className}&&startTime=${listSubAttendance.startTime}&&endTime=${listSubAttendance.endTime}">
+                                <a href="takeAttendance?subjectCode=${listSubAttendance.subjectCode}&&className=${listSubAttendance.className}&&startTime=${listSubAttendance.startTime}&&endTime=${listSubAttendance.endTime}" style="background-color: white">
                                     ${listSubAttendance.subjectCode} - ${listSubAttendance.subjectName}
                                     at class ${listSubAttendance.className} (Start ${listSubAttendance.dates})
                                 </a>
@@ -52,7 +59,7 @@
                                         <th style="background: #6B90DA">Note</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody style="background-color: whitesmoke">
                                     <c:forEach items="${listAttendanceInformations}" var="listAttendanceInformations">
                                         <tr>
                                             <td>${listAttendanceInformations.rollNumber}</td>
@@ -73,7 +80,7 @@
                                     </c:forEach>
                                 </tbody>
                             </table>
-                            <input type="submit" value="Save">
+                            <input class="btn btn-primary" type="submit" value="Save" style="margin-top: 10px">
                         </div>
                     </form>
 

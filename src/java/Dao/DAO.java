@@ -8,24 +8,32 @@ package Dao;
 import Entity.Account;
 import Entity.AttendanceInformation;
 import Entity.Dates;
+import Entity.Class;
+import Entity.ClassMember;
 import Entity.ScheduleDetail;
 import Entity.Slot;
+import Entity.Student;
+import Entity.StudentList;
 import Entity.StudentSubjectAttendance;
 import Entity.StudentSubjectAttendanceDetail;
 import Entity.SubjectAttendance;
+import Entity.TeacherInfor;
 import Entity.TeacherScheduleDetail;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Admin
  */
-public class DAO {
+public class DAO extends DBContext {
 
     Connection conn = null;// connect with sql sever
     PreparedStatement ps = null;//throw command from netbean to sql sever
@@ -80,6 +88,54 @@ public class DAO {
         return list;
     }
 
+    public List<StudentList> getAllStudent() {
+        String querry = "select Name, Rollnumber from Student";
+        List<StudentList> list = new ArrayList<>();
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(querry);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new StudentList(rs.getString(1), rs.getString(2)));
+            }
+        } catch (Exception e) {
+            System.out.println("sadasdasd");
+        }
+        return list;
+    }
+
+    public List<TeacherInfor> getTeacher() {
+        String querry = "select Id, Fullname from Teacher";
+        List<TeacherInfor> list = new ArrayList<>();
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(querry);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new TeacherInfor(rs.getInt(1), rs.getString(2)));
+            }
+        } catch (Exception e) {
+            System.out.println("sadasdasd");
+        }
+        return list;
+    }
+
+    public List< Class> getClassName() {
+        String querry = "select * from Class";
+        List<Class> list = new ArrayList<>();
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(querry);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Class(rs.getInt(1), rs.getString(2)));
+            }
+        } catch (Exception e) {
+            System.out.println("sadasdasd");
+        }
+        return list;
+    }
+
     public List<ScheduleDetail> getStudentScheduleDetail(String username, Date dates) {
         String querry = "select b.SubjectCode, f.ClassName, a.StartedAttend, c.Dates, g.SlotName from Attendance a \n"
                 + "	inner join Schedule b on a.Id = b.Id \n"
@@ -103,6 +159,223 @@ public class DAO {
             System.out.println("sadasdasd");
         }
         return list;
+    }
+
+    public List<StudentList> getClassMember(String className) {
+        String querry = "select a.Name, a.Rollnumber from Student a\n"
+                + "inner join ClassMember b on a.Rollnumber = b.RollNumber\n"
+                + "inner join Class c on b.ClassId = c.Id \n"
+                + "where c.ClassName = ? ";
+        List<StudentList> list = new ArrayList<>();
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(querry);
+            ps.setString(1, className);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new StudentList(rs.getString(1), rs.getString(2)));
+            }
+        } catch (Exception e) {
+            System.out.println("sadasdasd");
+        }
+        return list;
+    }
+
+    public Student getStudentInfor(String rollnumber) {
+        String sql = "select s.Rollnumber, s.Name, s.Username, s.EmailAddress, s.Gender, s.DOB from Student s where s.Rollnumber = ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, rollnumber);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                return new Student(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getBoolean(5), rs.getString(6));
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public TeacherInfor getTeacherInfor(int id) {
+        String sql = "select s.Id, s.Username, s.Fullname, s.EmailAddress, s.Gender, s.DOB from Teacher s where s.ID = ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                return new TeacherInfor(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getBoolean(5), rs.getString(6));
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public void updateStudent(Student s) {
+
+        String sql = "UPDATE Student SET Name = ?, Username = ?,EmailAddress = ?, Gender =?, DOB = ? WHERE Rollnumber = ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, s.getName());
+            ps.setString(2, s.getUsername());
+            ps.setString(3, s.getEmail());
+            ps.setBoolean(4, s.isGender());
+            ps.setString(5, s.getDob());
+            ps.setString(6, s.getRollnumber());
+            rs = ps.executeQuery();
+
+        } catch (Exception ex) {
+
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void updateTeacher(TeacherInfor s) {
+
+        String sql = "UPDATE Teacher SET Username = ?, Fullname = ?,EmailAddress = ?, Gender =?, DOB = ? WHERE Id = ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, s.getUsername());
+            ps.setString(2, s.getName());
+            ps.setString(3, s.getEmail());
+            ps.setBoolean(4, s.isGender());
+            ps.setString(5, s.getDob());
+            ps.setInt(6, s.getId());
+            rs = ps.executeQuery();
+
+        } catch (Exception ex) {
+
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void insertStudent(Student s) {
+
+        String sql = "INSERT INTO Student(RollNumber, Name, Username, EmailAddress, Gender, DOB)\n"
+                + "     VALUES\n"
+                + "           (?\n"
+                + "           ,?\n"
+                + "           ,?\n"
+                + "           ,?\n"
+                + "           ,?\n"
+                + "           ,?)";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, s.getRollnumber());
+            ps.setString(2, s.getName());
+            ps.setString(3, s.getUsername());
+            ps.setString(4, s.getEmail());
+            ps.setBoolean(5, s.isGender());
+            ps.setString(6, s.getDob());
+            rs = ps.executeQuery();
+        } catch (Exception ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void insertTeacher(TeacherInfor s) {
+
+        String sql = "INSERT INTO Teacher(Id,  Username, Fullname, EmailAddress, Gender, DOB)\n"
+                + "     VALUES\n"
+                + "           (?\n"
+                + "           ,?\n"
+                + "           ,?\n"
+                + "           ,?\n"
+                + "           ,?\n"
+                + "           ,?)";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, s.getId());
+            ps.setString(2, s.getName());
+            ps.setString(3, s.getUsername());
+            ps.setString(4, s.getEmail());
+            ps.setBoolean(5, s.isGender());
+            ps.setString(6, s.getDob());
+            rs = ps.executeQuery();
+        } catch (Exception ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void insertAccount(Account a) {
+
+        String sql = "INSERT INTO [Account]\n"
+                + "           ([Username]\n"
+                + "           ,[Password]\n"
+                + "           ,[Role])\n"
+                + "     VALUES\n"
+                + "           (?\n"
+                + "           ,?\n"
+                + "           ,?)";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, a.getUsername());
+            ps.setString(2, a.getPassword());
+            ps.setInt(3, a.getRole());
+            rs = ps.executeQuery();
+        } catch (Exception ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void insertStudentIntoCalss(ClassMember c) {
+
+        String sql = "INSERT INTO [ClassMember]\n"
+                + "           (RollNumber, ClassID)\n"
+                + "     VALUES (?,?)";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, c.getRollnumber());
+            ps.setInt(2, c.getClassID());
+            ps.executeQuery();
+        } catch (Exception ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void deleteStudent(String id) {
+        String sql = "DELETE Student WHERE RollNumber=?";
+        try {
+
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            ps.executeUpdate();
+        } catch (Exception ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void deleteTeacher(int id) {
+        String sql = "DELETE Teacher WHERE Id=?";
+        try {
+
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (Exception ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void deleteStudentFromClass(String rollnumber) {
+        String sql = "delete from ClassMember where RollNumber=?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, rollnumber);
+            ps.executeUpdate();
+        } catch (Exception ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public List<StudentSubjectAttendance> getStdSubject(String username) {
@@ -186,7 +459,7 @@ public class DAO {
                 + "inner join Slot d on a.slotID = d.slotID\n"
                 + "inner join Dates e on a.dateID =e.dateID\n"
                 + "inner join [Subject] f on a.subjectCode =f.subjectCode\n"
-                + "where c.username=? and e.Dates = DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()), 0)";
+                + "where c.username=? and e.Dates = '2022-07-12'";
         List<SubjectAttendance> list = new ArrayList<>();
         try {
             conn = new DBContext().getConnection();
@@ -210,7 +483,7 @@ public class DAO {
                 + "                inner join Class e on e.ID = a.classID\n"
                 + "                inner join Slot f on f.slotID = a.slotID\n"
                 + "                inner join Teacher g on g.ID =a.teacherID\n"
-                + "                where d.Dates =DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()), 0) and a.subjectCode = ? \n"
+                + "                where d.Dates ='2022-07-12' and a.subjectCode = ? \n"
                 + "                and e.className = ? \n"
                 + "                and f.startTime = ? and f.endTime = ? \n"
                 + "                and g.username = ?  \n"
@@ -261,11 +534,13 @@ public class DAO {
     }
 
     public static void main(String[] args) {
-        DAO acc = new DAO();
-        List<SubjectAttendance> list = acc.getSubjectAttendanceDetail("Teacher1");
-        for (SubjectAttendance o : list) {
-            System.out.println(o);
-        }
+        DAO dao = new DAO();
+//        Account acc = new Account("A3", "333", 2);
+//        dao.insertAccount(acc);
+//        Student stu = new Student("HE3", "Mr.3", "A3", "3@gmail.com", true, "01/01/2001");
+//        dao.insertStudent(stu);
+        ClassMember clm = new ClassMember("HE3", 2);
+        dao.insertStudentIntoCalss(clm);
 
     }
 }
